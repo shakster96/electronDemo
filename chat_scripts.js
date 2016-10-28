@@ -56,14 +56,14 @@ function getBotReply(message) {
                    id = result['convo_id'];
                }else{
                     //cookie add new convo , push to the JSON
-                   /*var prevConverstations = $.parseJSON($.cookie("prevConverstations"));
+                   var prevConverstations = $.parseJSON($.cookie("prevConverstations"));
                    prevConverstations.push(
                    { 'usersay' : message, 'botsay' : botsay ,'time' : time}
-                   );*/
+                   );
                }
 
        //save the cookie
-        //$.cookie("prevConverstations", JSON.stringify(prevConverstations));
+        $.cookie("prevConverstations", JSON.stringify(prevConverstations));
 
         var chatboxBotSay = "<div class=\"media-left\"><img src=\"http://bootdey.com/img/Content/avatar/avatar1.png\" class=\"img-circle img-sm\" alt=\"Profile Picture\"></div><div class=\"media-body pad-hor\"><div class=\"speech\"><p>" + botsay + "</p><p class=\"speech-time\"><i class=\"fa fa-clock-o fa-fw\"></i> " + time + "</p></div></div>";
         e.innerHTML = chatboxBotSay;
@@ -91,7 +91,7 @@ document.getElementById("message").addEventListener("keyup", function (event) {
 //load history button click event listener
 document.getElementById("load_History_Button").addEventListener("click", function () {
 
-    /*try{
+    try{
         var prevConverstations = $.parseJSON($.cookie("prevConverstations"));
         $(jQuery.parseJSON(JSON.stringify(prevConverstations))).each(function() {
         //User bubble
@@ -102,7 +102,7 @@ document.getElementById("load_History_Button").addEventListener("click", functio
     }catch(err){
         alert("no fluffing history dude. move on!");
     }
-*/
+
     //disabling the button after a click
     $(this).prop('disabled',true);
  
@@ -110,9 +110,9 @@ document.getElementById("load_History_Button").addEventListener("click", functio
 
 //delete history button click event listener
 document.getElementById("clear_History_Button").addEventListener("click", function () {
-    /*//alert("delete triggered");
+    //alert("delete triggered");
     $.cookie("prevConverstations", { path: '/' });
-    //$.cookie('prevConverstations', null);*/
+    //$.cookie('prevConverstations', null);
     alert("delete finished");
  
 }, false);
