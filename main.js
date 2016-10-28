@@ -20,9 +20,9 @@ function initialize () {
 
   function createWindow () {
     var windowOptions = {
-      width: 1080,
-      minWidth: 680,
-      height: 840,
+      width: 450,
+      minWidth: 450,
+      height: 550,
       title: app.getName()
     }
 

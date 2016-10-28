@@ -5,7 +5,7 @@ document.getElementById("send_Message_Button").addEventListener("click", functio
     }, "*");
     //get instant message
     var message = document.getElementById("message").value;
-    if(message != ""){
+    if(message.trim() != ""){
         var ul = document.getElementById("conversation");
         var li = document.createElement("li");
         //current time
@@ -46,21 +46,29 @@ function getBotReply(message) {
     }, function (responseData) {
         var result = $.parseJSON(responseData);
         var botsay = result['botsay'];
-       if (id == null) {
-                   //cookie JSON to create
-           
-                   var prevConverstations = [
-                   { 'usersay' : message, 'botsay' : botsay ,'time' : time}
-                   ];
 
-                   id = result['convo_id'];
-               }else{
-                    //cookie add new convo , push to the JSON
-                   var prevConverstations = $.parseJSON($.cookie("prevConverstations"));
-                   prevConverstations.push(
-                   { 'usersay' : message, 'botsay' : botsay ,'time' : time}
-                   );
-               }
+
+      if(id ==null && ($.cookie('prevConverstations') === null || $.cookie('prevConverstations') === ""
+         || $.cookie('prevConverstations') === "null" || $.cookie('prevConverstations') === undefined))
+         {
+         //cookie JSON to create
+          var prevConverstations = [
+          { 'usersay' : message, 'botsay' : botsay ,'time' : time}];
+          id = result['convo_id'];
+         }
+         else
+          {
+          try{
+           //cookie add new convo , push to the JSON
+                     var prevConverstations = $.parseJSON($.cookie("prevConverstations"));
+                     prevConverstations.push(
+                     { 'usersay' : message, 'botsay' : botsay ,'time' : time});
+          }catch(err){
+                  var prevConverstations = [
+                       { 'usersay' : message, 'botsay' : botsay ,'time' : time}];
+          }
+          }
+
 
        //save the cookie
         $.cookie("prevConverstations", JSON.stringify(prevConverstations));
@@ -111,10 +119,16 @@ document.getElementById("load_History_Button").addEventListener("click", functio
 //delete history button click event listener
 document.getElementById("clear_History_Button").addEventListener("click", function () {
     //alert("delete triggered");
-    $.cookie("prevConverstations", { path: '/' });
+    $.removeCookie("prevConverstations", { path: '/' });
     //$.cookie('prevConverstations', null);
-    alert("delete finished");
- 
+    //alert("delete finished");
+
+    // delete the chat in html
+      var list = document.getElementById("conversation");
+        while (list.hasChildNodes()) {
+              list.removeChild(list.firstChild);
+          }
+          addChatBubble("Hello there, how can I help you today ?",this.time,false);
 }, false);
 
 //create chat bubble when load history is clicked
@@ -140,3 +154,6 @@ function addChatBubble(message,time,isUser){
         obj.scrollTop = obj.scrollHeight;
 
 }
+//$(document).ready(function(){
+//    $('[data-toggle="tooltip"]').tooltip();
+//});
